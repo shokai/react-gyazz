@@ -46,7 +46,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/shokai/node-flux-boilerplate.git"
+    "url": "git://github.com/shokai/react-gyazz.git"
   },
   "keywords": [
     "express",
@@ -56,9 +56,9 @@
     "chat"
   ],
   "bugs": {
-    "url": "https://github.com/shokai/node-flux-boilerplate/issues"
+    "url": "https://github.com/shokai/react-gyazz/issues"
   },
-  "homepage": "https://github.com/shokai/node-flux-boilerplate",
+  "homepage": "https://github.com/shokai/react-gyazz",
   "directories": {
     "test": "tests"
   },
