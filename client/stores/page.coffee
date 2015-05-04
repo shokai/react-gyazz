@@ -1,4 +1,4 @@
-## Store: Chat
+## Store: Page
 
 Fluxxor = require 'fluxxor'
 
@@ -7,13 +7,7 @@ module.exports = (app) ->
   Fluxxor.createStore
 
     initialize: ->
-      @logs = window.logs or []
-      @bindActions 'add-chat-log', @addLog
+      @lines = window.lines or ['shokai', 'testtest']
 
     getState: ->
-      logs: @logs
-
-    addLog: (log) ->
-      log._id ||= Date.now()  # for react-key
-      @logs.unshift log
-      @emit 'change'
+      lines: @lines
