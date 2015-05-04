@@ -9,12 +9,12 @@ app =
 
 ## flux = stores, actions
 app.flux = new Fluxxor.Flux
-  Chat:   new (require('./stores/chat')(app))
+  Page:   new (require('./stores/page')(app))
   Socket: new (require('./stores/socket')(app))
 , require('./actions/actions')(app)
 
 ## Other Components
-app.socket.chat = require('./sockets/chat')(app)
+app.socket.chat = require('./sockets/page')(app)
 
 ## View
 View = require './views/main'
