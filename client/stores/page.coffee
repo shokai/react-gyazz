@@ -7,7 +7,18 @@ module.exports = (app) ->
   Fluxxor.createStore
 
     initialize: ->
+      @editline = null
       @lines = window.lines or ['(empty)']
+      @bindActions 'set-edit-line', @setEditLine
+      @bindActions 'set-line', @setLine
 
     getState: ->
       lines: @lines
+      editline: @editline
+
+    setEditLine: (@editline) -> @emit 'change'
+
+    setLine: (args) ->
+      if @editline is args.editline
+        @lines[args.editline] = args.value
+        @emit 'change'

@@ -8,7 +8,7 @@ Editor = require './editor'
 module.exports = React.createClass
   mixins: [
     Fluxxor.FluxMixin React
-    Fluxxor.StoreWatchMixin 'Socket'
+    Fluxxor.StoreWatchMixin 'Socket', 'Page'
   ]
 
   getStateFromFlux: ->
@@ -19,5 +19,7 @@ module.exports = React.createClass
     <div>
       <h1>{title}</h1>
       <div>socket.io: {@state.socket.status}</div>
-      <Editor lines={@state.page.lines} />
+      <Editor
+       lines={@state.page.lines}
+       editline={@state.page.editline} />
     </div>

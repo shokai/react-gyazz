@@ -3,6 +3,13 @@
 React   = require 'react'
 Fluxxor = require 'fluxxor'
 
+mix = require('./util').mix
+
+style =
+  input:
+    width: '80%'
+
+
 GyazzMarkup = require '../../libs/markup'
 markup = new GyazzMarkup
   host: 'http://gyazz.masuilab.org'
@@ -15,29 +22,62 @@ module.exports = React.createClass
     Fluxxor.FluxMixin React
   ]
 
+  componentDidUpdate: ->
+    if typeof @props.editline is 'number'
+      React
+        .findDOMNode @refs.editlineInput
+        .focus()
+
   render: ->
     num = 0
     lines = @props.lines.map (line) =>
-      html = markup.markup line
+      list_item = do (num) =>
+        if @props.editline isnt num
+          html = markup.markup line
+          <li
+           dangerouslySetInnerHTML={ __html: html }
+           key={num}
+           onMouseDown={ => @_onClickHoldStart num }
+           onMouseOut={@_onClickHoldCancel}
+           onMouseUp={@_onClickHoldCancel} />
+        else
+          <li key={num}>
+            <input
+             value={line}
+             style={style.input}
+             ref="editlineInput"
+             onChange={@_onInputChange}
+             onKeyDown={@_onInputKeyDown} />
+          </li>
+
       num += 1
-      do (num) =>
-        <li
-         dangerouslySetInnerHTML={ __html: html }
-         key={num}
-         onMouseDown={ => @_onClickHoldStart num-1 }
-         onMouseOut={@_onClickHoldCancel}
-         onMouseUp={@_onClickHoldCancel} />
+      return list_item
 
     <ul>{lines}</ul>
 
+  ## ClickHold
   _onClickHoldStart: (num) ->
-    console.log "hold start"
     clearTimeout clickHoldTimeoutId
-    clickHoldTimeoutId = setTimeout ->
-      console.log "edit start #{num}"
+    clickHoldTimeoutId = setTimeout =>
+      @getFlux().actions.editor.edit num
     , 500
 
 
   _onClickHoldCancel: (e) ->
-    console.log 'hold cancel'
     clearTimeout clickHoldTimeoutId
+
+  ## Edit
+  _onInputChange: (e) ->
+    @getFlux().actions.editor.setLine
+      value: e.target.value
+      editline: @props.editline
+
+  _onInputKeyDown: (e) ->
+    switch e.keyCode
+      when 38 # up
+        if @props.editline > 0
+          @getFlux().actions.editor.edit @props.editline-1
+      when 40 # down
+        if @props.editline < @props.lines.length-1
+          @getFlux().actions.editor.edit @props.editline+1
+
