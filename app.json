@@ -1,0 +1,14 @@
+{
+  "name": "node-flux-boilerplate",
+  "description": "react+fluxxor+socket.io chat",
+  "website": "https://github.com/shokai/node-flux-boilerplate",
+  "success_url": "/",
+  "addons": [
+    "mongolab"
+  ],
+  "env": {
+    "NODE_ENV": "production",
+    "DEBUG": "chat:*",
+    "TZ": "Asia/Tokyo"
+  }
+}
