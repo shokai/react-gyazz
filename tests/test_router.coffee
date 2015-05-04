@@ -16,18 +16,3 @@ describe 'Server', ->
     .expect 'Content-Type', /text/
     .end done
 
-
-describe 'model "Message"', ->
-
-  Message = mongoose.model 'Message'
-
-  it 'should have method "latest"', ->
-    assert.equal typeof Message['latest'], 'function'
-
-  describe 'method "latest"', ->
-
-    it 'should return latest chat messages', (done) ->
-
-      Message.latest 10, (err, res) ->
-        assert.equal res instanceof Array, true
-        done()
