@@ -1,8 +1,8 @@
 {
-  "name": "node-flux-boilerplate",
+  "name": "react-gyazz",
   "private": true,
   "version": "0.0.1",
-  "description": "react+fluxxor+socket.io chat",
+  "description": "react-gyazz",
   "main": "server/app.coffee",
   "scripts": {
     "start": "coffee server/app.coffee",

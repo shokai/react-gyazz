@@ -1,7 +1,7 @@
 'use strict'
 
 path     = require 'path'
-debug    = require('debug')('chat:router')
+debug    = require('debug')('gyazz:router')
 express  = require 'express'
 mongoose = require 'mongoose'
 
@@ -38,7 +38,7 @@ router.set 'package', pkg
 ## MongoDB ##
 mongodb_uri = process.env.MONGOLAB_URI or
               process.env.MONGOHQ_URL or
-              'mongodb://localhost/flux-chat'
+              'mongodb://localhost/react-gyazz'
 
 router.use session
   secret: (process.env.SESSION_SECRET or 'うどん居酒屋 かずどん')
@@ -50,9 +50,9 @@ router.use session
 
 ## load controllers, models, socket.io ##
 components =
-  models:      [ 'message' ]
+  models:      [ ]
   controllers: [ 'main' ]
-  sockets:     [ 'chat' ]
+  sockets:     [ ]
 
 for type, items of components
   for item in items

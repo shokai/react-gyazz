@@ -1,6 +1,5 @@
-debug    = require('debug')('chat:controller:main')
+debug    = require('debug')('gyazz:controller:main')
 mongoose = require 'mongoose'
-Message  = mongoose.model 'Message'
 
 module.exports = (router) ->
 
@@ -8,17 +7,10 @@ module.exports = (router) ->
   pkg    = router.get 'package'
 
   router.get '/', (req, res) ->
-    Message.latest 100, (err, msgs) ->
-      if err
-        debug err
-        return res.status(500).end "server error"
+    args =
+      title: config.title
+      app:
+        homepage: pkg.homepage
+        description: pkg.description
 
-      args =
-        title: config.title
-        chat:
-          messages: msgs
-        app:
-          homepage: pkg.homepage
-          description: pkg.description
-
-      return res.render 'index', args
+    return res.render 'index', args
