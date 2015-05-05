@@ -34,4 +34,15 @@ module.exports = (app) ->
     insertNewLine: (linenum) ->
       @dispatch 'remove-empty-line'
       @dispatch 'insert-new-line', linenum
-      @dispatch 'set-edit-line', linenum
+
+    swapNextLine: ->
+      @dispatch 'swap-next-line'
+
+    swapPrevLine: ->
+      @dispatch 'swap-prev-line'
+
+    swapNextBlock: ->
+      @dispatch 'swap-next-block'
+
+    swapPrevBlock: ->
+      @dispatch 'swap-prev-block'
