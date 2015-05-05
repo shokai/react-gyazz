@@ -1,0 +1,10 @@
+extends layout
+
+block scripts
+  script.
+    var page = JSON.parse(unescape("!{escape(JSON.stringify(page))}"));
+    var title = "!{title}"
+  script(src="/js/bundle.js")
+
+block content
+  div#app-container

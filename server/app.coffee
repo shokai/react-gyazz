@@ -50,7 +50,7 @@ router.use session
 
 ## load controllers, models, socket.io ##
 components =
-  models:      [ ]
+  models:      [ 'page' ]
   controllers: [ 'main' ]
   sockets:     [ ]
 
