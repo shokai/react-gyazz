@@ -1,8 +1,17 @@
 module.exports = (app) ->
 
-  app.socket.io.on 'connect', ->
+  io = app.socket.io
+
+  io.on 'connect', ->
     console.log 'connect!!'
     app.flux.actions.socket.setStatus 'connecting'
 
-  app.socket.io.on 'disconnect', ->
+  io.on 'disconnect', ->
     app.flux.actions.socket.setStatus 'closed..'
+
+
+  save: (wiki, title, text) ->
+    io.emit 'pagedata',
+      wiki: wiki
+      title: title
+      text: text

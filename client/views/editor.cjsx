@@ -12,8 +12,8 @@ style =
 
 GyazzMarkup = require '../../libs/markup'
 markup = new GyazzMarkup
-  host: 'http://gyazz.masuilab.org'
-  wiki: '増井研'
+  host: "#{location.protocol}//#{location.host}"
+  wiki: window.page.wiki
 
 clickHoldTimeoutId = null
 

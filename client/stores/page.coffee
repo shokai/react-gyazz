@@ -9,7 +9,7 @@ module.exports = (app) ->
 
     initialize: ->
       @editline = null
-      @lines = window.lines or ['(empty)']
+      @lines = window.page.text.split(/[\r\n]+/) or ['(empty)']
       @bindActions 'set-edit-line', @setEditLine
       @bindActions 'edit-prev-line', @editPrevLine
       @bindActions 'edit-next-line', @editNextLine
@@ -18,6 +18,8 @@ module.exports = (app) ->
       @bindActions 'indent-left', @indentLeft
       @bindActions 'insert-new-line', @insertNewLine
       @bindActions 'remove-empty-line', @removeEmptyLine
+      @on 'change', =>
+        app.socket.page.save window.page.wiki, window.page.title, @lines.join('\n')
 
     getState: ->
       lines: @lines
