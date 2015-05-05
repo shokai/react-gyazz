@@ -3,13 +3,13 @@ node_js:
 - '0.12'
 services:
 - mongodb
+notifications:
+  slack:
+    secure: hhjFwxspabclpfnkVdjcHPP0X1juSHyF/kgppw2niWujluNazo2Dm2HmaVFkOIIHPEwjll/fiph6MvTBPMyj/YMMWGLwr/X4mJCasRyaaUXq8DLaEKfzEzLD/em/NNalACu05wGE7mZIqFFhtN6Pft2fNXVVNrfeNkfxvcyciuk=
 deploy:
   provider: heroku
   api_key:
-    secure: GZAD/tCDCK8szGPbyFFiBELe19+Lc4r6UbT6/IqOzD0x/ZGKfWLjEowowUjMQKfF42NGF/+I9mGpdbydsnIgURz3afevbebmpS2NjVDNtmWGKmF5AyoexqTGrblwW8QiiQo/qwyqy53smgUpZh31u5kjJ5Ky5Dsr5ZU/K67mIM0=
-  app: node-flux-boilerplate
+    secure: U0f8Xox5H140ay5YK+AW4y2AGT2hyetR7vna+YIE0oGm5KE+NsnRsORbCeqCblvUskdAROvGmEdyRW2+wQ57P2KkSlWpQuMjRTprR3NgP4u6QvsZHRPBPqefbyq3Y17cUXBfm0X5DqdRzyhqNe3UsjRIpT4IQaMtOoNI2nXsFUs=
+  app: react-gyazz
   on:
-    repo: shokai/node-flux-boilerplate
-notifications:
-  slack:
-    secure: ffnhOHdw1ma3OzSXFzU8J4ISetoyHZbUjlDV6cs0iRtvxR/dL7QmlSvL1vy4ON0zrnSPRlRp5/HQ8iVofc8mIsUFgsbgjJRAHRRkCc2o2V+vDx6USnq8FbdS3Y/DuVSfnee8UQm1nfIxGM1w/l1A/RSFV4zB9vJUcBH+0pJHNw0=
+    repo: shokai/react-gyazz
