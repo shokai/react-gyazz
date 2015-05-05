@@ -26,17 +26,21 @@ module.exports = React.createClass
     num = 0
     lines = @props.lines.map (line) =>
       list_item = do (num) =>
+        indent = line.match(/^(\s*)/)[0].length
         if num isnt @props.editline
           gyazz_html = markup.markup line
           <li
            key={num}
+           style={ {marginLeft: indent*20} }
            onMouseDown={ => @_onClickHoldStart num }
            onMouseOut={@_onClickHoldCancel}
            onMouseUp={@_onClickHoldCancel}>
              <div dangerouslySetInnerHTML={__html: gyazz_html} />
           </li>
         else
-          <li key={num}>
+          <li
+           key={num}
+           style={ marginLeft: indent*20 } >
             <input
              value={line}
              style={style.input}
