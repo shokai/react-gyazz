@@ -24,6 +24,12 @@ module.exports = (app) ->
     setLine: (args) ->
       @dispatch 'set-line', args
 
+    indentRight: ->
+      @dispatch 'indent-right'
+
+    indentLeft: ->
+      @dispatch 'indent-left'
+
     insertNewLine: (linenum) ->
       @dispatch 'remove-empty-line'
       @dispatch 'insert-new-line', linenum

@@ -14,6 +14,8 @@ module.exports = (app) ->
       @bindActions 'edit-prev-line', @editPrevLine
       @bindActions 'edit-next-line', @editNextLine
       @bindActions 'set-line', @setLine
+      @bindActions 'indent-right', @indentRight
+      @bindActions 'indent-left', @indentLeft
       @bindActions 'insert-new-line', @insertNewLine
       @bindActions 'remove-empty-line', @removeEmptyLine
 
@@ -35,6 +37,16 @@ module.exports = (app) ->
 
     setLine: (args) ->
       @lines[args.editline] = args.value
+      @emit 'change'
+
+    indentRight: ->
+      line = @lines[@editline]
+      @lines[@editline] = ' '+line
+      @emit 'change'
+
+    indentLeft: ->
+      line = @lines[@editline]
+      @lines[@editline] = line.replace /^\s/, ''
       @emit 'change'
 
     insertNewLine: (linenum) ->

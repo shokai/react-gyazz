@@ -99,5 +99,11 @@ module.exports = React.createClass
       when 78 # n
         if e.ctrlKey
           @getFlux().actions.editor.editNextLine()
+      when 39 # right
+        if e.shiftKey
+          @getFlux().actions.editor.indentRight()
+      when 37 # left
+        if e.shiftKey
+          @getFlux().actions.editor.indentLeft()
       when 13 # enter-key
         @getFlux().actions.editor.insertNewLine @props.editline+1
