@@ -11,6 +11,8 @@ module.exports = (app) ->
       @editline = null
       @lines = window.lines or ['(empty)']
       @bindActions 'set-edit-line', @setEditLine
+      @bindActions 'edit-prev-line', @editPrevLine
+      @bindActions 'edit-next-line', @editNextLine
       @bindActions 'set-line', @setLine
       @bindActions 'insert-new-line', @insertNewLine
       @bindActions 'remove-empty-line', @removeEmptyLine
@@ -22,6 +24,14 @@ module.exports = (app) ->
     setEditLine: (linenum) ->
       @editline = _.min [linenum, @lines.length-1]
       @emit 'change'
+
+    editPrevLine: ->
+      if @editline > 0
+        @setEditLine @editline-1
+
+    editNextLine: ->
+      if @editline < @lines.length-1
+        @setEditLine @editline+1
 
     setLine: (args) ->
       @lines[args.editline] = args.value

@@ -86,10 +86,8 @@ module.exports = React.createClass
   _onInputKeyDown: (e) ->
     switch e.keyCode
       when 38 # up
-        if @props.editline > 0
-          @getFlux().actions.editor.edit @props.editline-1
+        @getFlux().actions.editor.editPrevLine()
       when 40 # down
-        if @props.editline < @props.lines.length-1
-          @getFlux().actions.editor.edit @props.editline+1
+        @getFlux().actions.editor.editNextLine()
       when 13 # enter-key
         @getFlux().actions.editor.insertNewLine @props.editline+1

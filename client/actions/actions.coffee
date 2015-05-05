@@ -13,6 +13,14 @@ module.exports = (app) ->
       @dispatch 'set-edit-line', num
       @dispatch 'remove-empty-line'
 
+    editPrevLine: ->
+      @dispatch 'edit-prev-line'
+      @dispatch 'remove-empty-line'
+
+    editNextLine: ->
+      @dispatch 'edit-next-line'
+      @dispatch 'remove-empty-line'
+
     setLine: (args) ->
       @dispatch 'set-line', args
 
