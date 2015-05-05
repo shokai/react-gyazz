@@ -89,5 +89,11 @@ module.exports = React.createClass
         @getFlux().actions.editor.editPrevLine()
       when 40 # down
         @getFlux().actions.editor.editNextLine()
+      when 80 # p
+        if e.ctrlKey
+          @getFlux().actions.editor.editPrevLine()
+      when 78 # n
+        if e.ctrlKey
+          @getFlux().actions.editor.editNextLine()
       when 13 # enter-key
         @getFlux().actions.editor.insertNewLine @props.editline+1
