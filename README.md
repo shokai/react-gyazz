@@ -1,11 +1,11 @@
-node-flux-boilerplate
-=====================
-react+fluxxor+socket.io chat
+React Gyazz
+===========
+Gyazz style Wiki implement with Ract and Fluxxor
 
-- [demo](https://node-flux-boilerplate.herokuapp.com/)
-- [source code](https://github.com/shokai/node-flux-boilerplate)
+- [demo](https://react-gyazz.herokuapp.com/)
+- [source code](https://github.com/shokai/react-gyazz)
 
-[![Build Status](https://travis-ci.org/shokai/node-flux-boilerplate.svg?branch=master)](https://travis-ci.org/shokai/node-flux-boilerplate)
+[![Build Status](https://travis-ci.org/shokai/react-gyazz.svg?branch=master)](https://travis-ci.org/shokai/react-gyazz)
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
 - coffee-script
@@ -42,7 +42,7 @@ RUN
 ---
 
     # start server at port:3000
-    % PORT=3000 DEBUG=chat* npm start
+    % PORT=3000 DEBUG=gyazz* npm start
 
 
 TEST & LINT
@@ -56,13 +56,13 @@ DEPLOY
 
 ### create app
 
-    % heroku apps:create my-heroku-app-name
+    % heroku apps:create react-gyazz
     % git push heroku master
 
 ### config
 
     % heroku config:add TZ=Asia/Tokyo
-    % heroku config:set "DEBUG=chat*"
+    % heroku config:set "DEBUG=gyazz*"
     % heroku config:set NODE_ENV=production
 
 ### enable MongoDB plug-in

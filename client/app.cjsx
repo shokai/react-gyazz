@@ -14,7 +14,7 @@ app.flux = new Fluxxor.Flux
 , require('./actions/actions')(app)
 
 ## Other Components
-app.socket.chat = require('./sockets/page')(app)
+app.socket.page = require('./sockets/page')(app)
 
 ## View
 View = require './views/main'
