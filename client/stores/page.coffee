@@ -142,7 +142,11 @@ module.exports = (app) ->
       @save()
 
     removeEmptyLine: ->
-      @lines = _.reject @lines, (line) -> /^\s*$/.test line
+      @lines = _
+        .chain @lines
+        .reject (line) -> /^\s*$/.test line
+        .map (line) -> line.replace /\s+$/, ''
+        .value()
       @emit 'change'
 
     save: ->
