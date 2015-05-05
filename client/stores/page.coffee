@@ -47,6 +47,7 @@ module.exports = (app) ->
 
     setLines: (lines) ->
       @lines = lines
+      @removeEmptyLine()
       @emit 'change'
 
     indentRight: ->
@@ -145,7 +146,10 @@ module.exports = (app) ->
       @lines = _
         .chain @lines
         .reject (line) -> /^\s*$/.test line
-        .map (line) -> line.replace /\s+$/, ''
+        .map (line) ->
+          line
+          .replace /\s+$/, ''
+          .replace /^\s{10,}/, '          '
         .value()
       @emit 'change'
 
