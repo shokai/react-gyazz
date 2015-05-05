@@ -49,11 +49,11 @@
     "url": "git://github.com/shokai/react-gyazz.git"
   },
   "keywords": [
-    "express",
-    "socket.io",
+    "gyazz",
+    "wiki",
     "react",
     "flux",
-    "chat"
+    "socket.io"
   ],
   "bugs": {
     "url": "https://github.com/shokai/react-gyazz/issues"
