@@ -19,6 +19,10 @@ module.exports = (app) ->
       @bindActions 'indent-left', @indentLeft
       @bindActions 'insert-new-line', @insertNewLine
       @bindActions 'remove-empty-line', @removeEmptyLine
+      @bindActions 'flip-next-line', @flipNextLine
+      @bindActions 'flip-prev-line', @flipPrevLine
+      @bindActions 'flip-next-block', @flipNextBlock
+      @bindActions 'flip-prev-block', @flipPrevBlock
 
     getState: ->
       lines: @lines
@@ -59,6 +63,28 @@ module.exports = (app) ->
 
     insertNewLine: (linenum) ->
       @lines.splice linenum, 0, ""
+
+    flipPrevLine: ->
+      return if @editline < 1
+      line = @lines[@editline]
+      @lines[@editline] = @lines[@editline-1]
+      @lines[@editline-1] = line
+      @editline -= 1
+      @emit 'change'
+
+    flipNextLine: ->
+      return unless @editline < @lines.length-1
+      line = @lines[@editline]
+      @lines[@editline] = @lines[@editline+1]
+      @lines[@editline+1] = line
+      @editline += 1
+      @emit 'change'
+
+    flipPrevBlock: ->
+      console.log 'flipPrevBlock'
+
+    flipNextBlock: ->
+      console.log 'flipNextBlock'
 
     removeEmptyLine: ->
       @lines = _.reject @lines, (line) -> /^\s*$/.test line

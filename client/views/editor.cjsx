@@ -90,9 +90,19 @@ module.exports = React.createClass
   _onInputKeyDown: (e) ->
     switch e.keyCode
       when 38 # up
-        @getFlux().actions.editor.editPrevLine()
+        if e.shiftKey
+          @getFlux().actions.editor.flipPrevBlock()
+        else if e.metaKey or e.ctrlKey
+          @getFlux().actions.editor.flipPrevLine()
+        else
+          @getFlux().actions.editor.editPrevLine()
       when 40 # down
-        @getFlux().actions.editor.editNextLine()
+        if e.shiftKey
+          @getFlux().actions.editor.flipNextBlock()
+        else if e.metaKey or e.ctrlKey
+          @getFlux().actions.editor.flipNextLine()
+        else
+          @getFlux().actions.editor.editNextLine()
       when 80 # p
         if e.ctrlKey
           @getFlux().actions.editor.editPrevLine()

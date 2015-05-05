@@ -35,3 +35,15 @@ module.exports = (app) ->
       @dispatch 'remove-empty-line'
       @dispatch 'insert-new-line', linenum
       @dispatch 'set-edit-line', linenum
+
+    flipNextLine: ->
+      @dispatch 'flip-next-line'
+
+    flipPrevLine: ->
+      @dispatch 'flip-prev-line'
+
+    flipNextBlock: ->
+      @dispatch 'flip-next-block'
+
+    flipPrevBlock: ->
+      @dispatch 'flip-prev-block'
