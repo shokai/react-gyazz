@@ -7,8 +7,19 @@ module.exports = (router) ->
   io = router.get 'socket.io'
 
   io.on 'connection', (socket) ->
-    debug 'new connection'
+    wiki  = decodeURIComponent socket.handshake.query.wiki
+    title = decodeURIComponent socket.handshake.query.title
+    unless wiki? or title?
+      socket.disconnect()
+      return
+
+    room = "#{wiki}/#{title}"
+    debug "new connection  #{room}"
+    socket.join room
+    socket.once 'disconnect', ->
+      socket.leave room
 
     socket.on 'pagedata', (page) ->
-      debug "write #{page.wiki}/#{page.title}"
-      Page.write page.wiki, page.title, page.text
+      debug "write #{wiki}/#{title}"
+      Page.write wiki, title, page.text
+      socket.broadcast.to(room).emit 'pagedata', page

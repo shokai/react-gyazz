@@ -1,3 +1,5 @@
+## Socket page
+
 module.exports = (app) ->
 
   io = app.socket.io
@@ -9,9 +11,11 @@ module.exports = (app) ->
   io.on 'disconnect', ->
     app.flux.actions.socket.setStatus 'closed..'
 
+  io.on 'pagedata', (page) ->
+    lines = page.text.split(/[\r\n]+/)
+    console.log "received pagedata"
+    app.flux.actions.editor.setLines lines
 
-  save: (wiki, title, text) ->
+  save: (text) ->
     io.emit 'pagedata',
-      wiki: wiki
-      title: title
       text: text

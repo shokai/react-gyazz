@@ -14,12 +14,11 @@ module.exports = (app) ->
       @bindActions 'edit-prev-line', @editPrevLine
       @bindActions 'edit-next-line', @editNextLine
       @bindActions 'set-line', @setLine
+      @bindActions 'set-lines', @setLines
       @bindActions 'indent-right', @indentRight
       @bindActions 'indent-left', @indentLeft
       @bindActions 'insert-new-line', @insertNewLine
       @bindActions 'remove-empty-line', @removeEmptyLine
-      @on 'change', =>
-        app.socket.page.save window.page.wiki, window.page.title, @lines.join('\n')
 
     getState: ->
       lines: @lines
@@ -40,16 +39,23 @@ module.exports = (app) ->
     setLine: (args) ->
       @lines[args.editline] = args.value
       @emit 'change'
+      @save()
+
+    setLines: (lines) ->
+      @lines = lines
+      @emit 'change'
 
     indentRight: ->
       line = @lines[@editline]
       @lines[@editline] = ' '+line
       @emit 'change'
+      @save()
 
     indentLeft: ->
       line = @lines[@editline]
       @lines[@editline] = line.replace /^\s/, ''
       @emit 'change'
+      @save()
 
     insertNewLine: (linenum) ->
       @lines.splice linenum, 0, ""
@@ -57,3 +63,6 @@ module.exports = (app) ->
     removeEmptyLine: ->
       @lines = _.reject @lines, (line) -> /^\s*$/.test line
       @emit 'change'
+
+    save: ->
+      app.socket.page.save @lines.join '\n'
