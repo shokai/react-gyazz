@@ -11,10 +11,12 @@ module.exports = (app) ->
   editor:
     edit: (num) ->
       @dispatch 'set-edit-line', num
+      @dispatch 'remove-empty-line'
 
     setLine: (args) ->
       @dispatch 'set-line', args
 
     insertNewLine: (linenum) ->
+      @dispatch 'remove-empty-line'
       @dispatch 'insert-new-line', linenum
       @dispatch 'set-edit-line', linenum

@@ -1,6 +1,7 @@
 ## Store: Page
 
 Fluxxor = require 'fluxxor'
+_       = require 'lodash'
 
 module.exports = (app) ->
 
@@ -12,12 +13,15 @@ module.exports = (app) ->
       @bindActions 'set-edit-line', @setEditLine
       @bindActions 'set-line', @setLine
       @bindActions 'insert-new-line', @insertNewLine
+      @bindActions 'remove-empty-line', @removeEmptyLine
 
     getState: ->
       lines: @lines
       editline: @editline
 
-    setEditLine: (@editline) -> @emit 'change'
+    setEditLine: (linenum) ->
+      @editline = _.min [linenum, @lines.length-1]
+      @emit 'change'
 
     setLine: (args) ->
       @lines[args.editline] = args.value
@@ -25,3 +29,7 @@ module.exports = (app) ->
 
     insertNewLine: (linenum) ->
       @lines.splice linenum, 0, ""
+
+    removeEmptyLine: ->
+      @lines = _.reject @lines, (line) -> /^\s*$/.test line
+      @emit 'change'
