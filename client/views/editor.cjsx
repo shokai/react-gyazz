@@ -32,14 +32,15 @@ module.exports = React.createClass
     num = 0
     lines = @props.lines.map (line) =>
       list_item = do (num) =>
-        if @props.editline isnt num
-          html = markup.markup line
+        if num isnt @props.editline
+          gyazz_html = markup.markup line
           <li
-           dangerouslySetInnerHTML={ __html: html }
            key={num}
            onMouseDown={ => @_onClickHoldStart num }
            onMouseOut={@_onClickHoldCancel}
-           onMouseUp={@_onClickHoldCancel} />
+           onMouseUp={@_onClickHoldCancel}>
+             <div dangerouslySetInnerHTML={__html: gyazz_html} />
+          </li>
         else
           <li key={num}>
             <input

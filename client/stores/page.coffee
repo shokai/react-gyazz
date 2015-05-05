@@ -19,6 +19,5 @@ module.exports = (app) ->
     setEditLine: (@editline) -> @emit 'change'
 
     setLine: (args) ->
-      if @editline is args.editline
-        @lines[args.editline] = args.value
-        @emit 'change'
+      @lines[args.editline] = args.value
+      @emit 'change'
