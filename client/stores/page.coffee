@@ -19,7 +19,7 @@ module.exports = (app) ->
       @bindActions 'insert-new-line', @insertNewLine
       @bindActions 'remove-empty-line', @removeEmptyLine
       @on 'change', =>
-        app.socket.page.save window.page.wiki, window.page.title, @lines.join('\n')
+        app.socket.page.save @lines.join('\n')
 
     getState: ->
       lines: @lines

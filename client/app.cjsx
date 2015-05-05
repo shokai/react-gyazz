@@ -1,6 +1,8 @@
 React   = require 'react'
 Fluxxor = require 'fluxxor'
-socket  = require('socket.io-client').connect "#{location.protocol}//#{location.host}"
+
+query   = "wiki=#{encodeURIComponent page.wiki}&title=#{encodeURIComponent page.title}"
+socket  = require('socket.io-client').connect "#{location.protocol}//#{location.host}?#{query}"
 
 app =
   socket:
