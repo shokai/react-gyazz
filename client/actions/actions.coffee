@@ -14,3 +14,7 @@ module.exports = (app) ->
 
     setLine: (args) ->
       @dispatch 'set-line', args
+
+    insertNewLine: (linenum) ->
+      @dispatch 'insert-new-line', linenum
+      @dispatch 'set-edit-line', linenum

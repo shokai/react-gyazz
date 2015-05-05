@@ -11,6 +11,7 @@ module.exports = (app) ->
       @lines = window.lines or ['(empty)']
       @bindActions 'set-edit-line', @setEditLine
       @bindActions 'set-line', @setLine
+      @bindActions 'insert-new-line', @insertNewLine
 
     getState: ->
       lines: @lines
@@ -21,3 +22,6 @@ module.exports = (app) ->
     setLine: (args) ->
       @lines[args.editline] = args.value
       @emit 'change'
+
+    insertNewLine: (linenum) ->
+      @lines.splice linenum, 0, ""

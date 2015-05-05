@@ -91,3 +91,5 @@ module.exports = React.createClass
       when 40 # down
         if @props.editline < @props.lines.length-1
           @getFlux().actions.editor.edit @props.editline+1
+      when 13 # enter-key
+        @getFlux().actions.editor.insertNewLine @props.editline+1
