@@ -1,12 +1,16 @@
 # Gyazz markup
 
+_ = require 'lodash'
+
 module.exports = class GyazzMarkup
 
   constructor: (opts) ->
     @host = opts.host
     @wiki = opts.wiki
 
-  markup: (lines) ->
+  markup: (lines, opts={escape: true}) ->
+    lines = _.escape lines if opts.escape
+
     lines
       .split /[\r\n]/
       .map (line) =>
