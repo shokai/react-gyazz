@@ -22,12 +22,6 @@ module.exports = React.createClass
     Fluxxor.FluxMixin React
   ]
 
-  componentDidUpdate: ->
-    if typeof @props.editline is 'number'
-      React
-        .findDOMNode @refs.editlineInput
-        .focus()
-
   render: ->
     num = 0
     lines = @props.lines.map (line) =>
@@ -56,6 +50,22 @@ module.exports = React.createClass
 
     <ul>{lines}</ul>
 
+  ## finish edit-mode
+  componentDidMount: ->
+    document.body.addEventListener 'click', @_editStop
+
+  componentWillUnmount: ->
+    document.body.removeEventListener 'click', @_editStop
+
+  componentDidUpdate: ->
+    return if typeof @props.editline isnt 'number'
+    React
+      .findDOMNode @refs.editlineInput
+      .focus()
+
+  _editStop: ->
+    @getFlux().actions.editor.edit false
+
   ## ClickHold
   _onClickHoldStart: (num) ->
     clearTimeout clickHoldTimeoutId
@@ -81,4 +91,3 @@ module.exports = React.createClass
       when 40 # down
         if @props.editline < @props.lines.length-1
           @getFlux().actions.editor.edit @props.editline+1
-
