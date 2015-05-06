@@ -92,15 +92,14 @@ module.exports = (app) ->
       line.match(/^(\s*)/)[0].length
 
     getBlockOffsets: (linenum) ->
-      offsets = [linenum, null]
+      offsets = [linenum, linenum]
       currentIndent = @getIndentLevel @lines[linenum]
       for i in [linenum+1...@lines.length]
         indent = @getIndentLevel @lines[i]
-        if indent <= currentIndent
-          offsets[1] = i-1
+        if indent > currentIndent
+          offsets[1] = i
+        else
           break
-      unless offsets[1]
-        offsets[1] = @lines.length-1
       return offsets
 
     getBlock: (offsets) ->
