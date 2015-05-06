@@ -14,6 +14,16 @@ describe 'GyazzMarkup', ->
     host: 'http://gyazz.com'
     wiki: 'test'
 
+  describe 'method "markup"', ->
+
+    it 'should escape html tag', ->
+      assert.equal markup.markup("<marquee>")
+      , "&lt;marquee&gt;"
+
+    it 'should not escape html tag if option {escape: false}', ->
+      assert.equal markup.markup("<marquee>", {escape: false})
+      , "<marquee>"
+
   describe 'method "image"', ->
 
     it 'sohuld markup img tag png', ->
