@@ -18,7 +18,7 @@ module.exports = (app) ->
       @bindActions 'indent-right', @indentRight
       @bindActions 'indent-left', @indentLeft
       @bindActions 'insert-new-line', @insertNewLine
-      @bindActions 'remove-empty-line', @removeEmptyLine
+      @bindActions 'remove-empty-lines', @removeEmptyLines
       @bindActions 'swap-next-line', @swapNextLine
       @bindActions 'swap-prev-line', @swapPrevLine
       @bindActions 'swap-next-block', @swapNextBlock
@@ -47,7 +47,7 @@ module.exports = (app) ->
 
     setLines: (lines) ->
       @lines = lines
-      @removeEmptyLine()
+      @removeEmptyLines()
       @emit 'change'
 
     indentRight: ->
@@ -145,7 +145,7 @@ module.exports = (app) ->
       @emit 'change'
       @save()
 
-    removeEmptyLine: ->
+    removeEmptyLines: ->
       @lines = _
         .chain @lines
         .reject (line) -> /^\s*$/.test line
