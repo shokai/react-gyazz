@@ -15,14 +15,18 @@ module.exports = class GyazzMarkup
     lines
       .split /[\r\n]/
       .map (line) =>
-        line = @url_with_image line
-        line = @image line
-        line = @strong line
-        line = @url_with_title line
-        line = @url line
-        line = @wiki_link line
-        line = @inner_link line
-        line
+        methods = [
+          'url_with_image'
+          'image'
+          'strong'
+          'url_with_title'
+          'url'
+          'wiki_link'
+          'inner_link'
+        ]
+        for method in methods
+          line = @[method](line)
+        return line
       .join ('\n')
 
   url_with_image: (line) ->
