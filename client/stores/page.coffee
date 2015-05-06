@@ -62,9 +62,13 @@ module.exports = (app) ->
       @emit 'change'
       @save()
 
-    insertNewLine: (linenum) ->
-      @lines.splice linenum, 0, ""
-      @setEditLine linenum
+    insertNewLine: ->
+      indent = @getIndentLevel @lines[@editline]
+      spaces = [0...indent]
+        .map (i) -> " "
+        .join ''
+      @lines.splice @editline+1, 0, spaces
+      @setEditLine @editline+1
 
     swapPrevLine: ->
       return if @editline < 1
