@@ -21,5 +21,8 @@ module.exports = (router) ->
 
     socket.on 'pagedata', (page) ->
       debug "write #{wiki}/#{title}"
-      Page.write wiki, title, page.text
+      Page.write
+        wiki:  wiki
+        title: title
+        text:  page.text
       socket.broadcast.to(room).emit 'pagedata', page

@@ -24,6 +24,7 @@ REQUIREMENTS
 
 - Node.js v0.12.x
 - MongoDB v2.x
+- Memcached
 
 
 BUILD CLIENT-JS&JSX

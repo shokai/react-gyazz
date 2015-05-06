@@ -38,6 +38,7 @@
     "grunt-simple-mocha": "*",
     "jade": "*",
     "lodash": "*",
+    "memjs": "^0.8.5",
     "mocha": "*",
     "mongoose": "^4.0",
     "react": "^0.13.2",

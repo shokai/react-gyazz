@@ -22,7 +22,10 @@ module.exports = (router) ->
     title = req.params.title
     if !Page.isValidName wiki or !Page.isValidName title
       return res.status(404).end 'not found'
-    Page.findOneByName wiki, title, (err, page) ->
+    Page.findOneByName
+      wiki:  wiki
+      title: title
+    , (err, page) ->
       if err
         debug JSON.stringify err
         return res.status(500).end 'server error'

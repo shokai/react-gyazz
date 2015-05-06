@@ -3,26 +3,29 @@
 debug    = require('debug')('gyazz:models:page')
 _        = require 'lodash'
 mongoose = require 'mongoose'
+memjs    = require 'memjs'
+cache    = memjs.Client.create null, {expire: 60}
 
 module.exports = (app) ->
 
-  isValidName = (name) ->
-    if typeof name isnt 'string'
-      return false
-    if name.length < 1
-      return false
-    if /(^\/|\/$)/.test name
-      return false
-    return true
+  pkg = app.get 'package'
 
-  toValidName = (name) ->
-    return name.replace(/^\/+/, '').replace(/\/+$/, '')
+  isValidName = (name) ->
+    return false if typeof name isnt 'string'
+    return false if name.length < 1
+    return false if /(^\/|\/$)/.test name
+    true
+
+  toValidName = (name) -> name.replace(/^\/+/, '').replace(/\/+$/, '')
 
   isEmptyPageText = (text) ->
     return false if typeof text isnt 'string'
     return text is null or
            text.length < 1 or
            text is '(empty)'
+
+  cache.createKey = (wiki, title) -> "#{pkg.name}::page::#{wiki}/#{title}"
+
 
   pageSchema = new mongoose.Schema
     wiki:
@@ -34,7 +37,10 @@ module.exports = (app) ->
     text:
       type: String
       default: '(empty)'
-    timestamp:
+    created_at:
+      type: Date
+      default: -> Date.now()
+    updated_at:
       type: Date
       default: -> Date.now()
 
@@ -44,22 +50,49 @@ module.exports = (app) ->
   pageSchema.methods.isEmpty = ->
     return isEmptyPageText @text
 
-  pageSchema.statics.findOneByName = (wiki, title, callback) ->
+
+
+  # Options:
+  #   cache: false => disable cache
+  pageSchema.statics.findOneByName = (opts = {wiki: null, title: null} , callback) ->
+    wiki  = opts.wiki
+    title = opts.title
     if !isValidName(wiki) or
        (!(title instanceof RegExp) and !isValidName(title))
       callback "invalid name wiki:#{wiki}, title:#{title}"
       return
 
-    debug "get page #{wiki}/#{title}"
+    if opts.cache is false
+      @findOne
+        wiki:  wiki
+        title: title
+      .exec callback
+      return
 
-    @findOne
-      wiki: wiki
-      title:title
-    .exec (err, result) ->
-      callback err, result
+    key = cache.createKey wiki, title
+    cache.get key, (err, cached_text, flag) =>
+      if err
+        debug "cache get Error - #{err}"
+      if !err and cached_text?
+        debug "get page #{wiki}/#{title} - cache hit"
+        page = new @
+          wiki: wiki
+          title: title
+          text: decodeURI cached_text
+        callback null, page
+        return
+      debug "get page #{wiki}/#{title}"
+      @findOne
+        wiki:  wiki
+        title: title
+      .exec callback
 
 
-  pageSchema.statics.write = (wiki, title, text) ->
+  pageWriteTimeouts = {}
+  pageSchema.statics.write = (opts = {wiki: null, title: null, text: null}) ->
+    wiki  = opts.wiki
+    title = opts.title
+    text  = opts.text
     if typeof text isnt 'string'
       return debug "invalid text"
 
@@ -67,16 +100,34 @@ module.exports = (app) ->
        (!(title instanceof RegExp) and !isValidName(title))
       return debug "invalid name wiki:#{wiki}, title:#{title}"
 
-    @findOneByName wiki, title, (err, page) ->
-      return debug err if err
+    key = cache.createKey wiki, title
+    cache.set key, encodeURI(text), (err, val) =>
+      wait = 20000  # 20sec
+      if err
+        debug "cache set Error - #{err}"
+        wait = 10
+      if isEmptyPageText text
+        wait = 1
 
-      unless page
-        Page = mongoose.model('Page')
-        page = new Page wiki:wiki, title:title
+      clearTimeout pageWriteTimeouts[key]
+      pageWriteTimeouts[key] = setTimeout =>
 
-      page.text = text
-      page.save (err, data) ->
-        if err
-          return debug err
+        @findOneByName
+          wiki:  wiki
+          title: title
+          cache: false
+        , (err, page) =>
+          return debug err if err
+
+          unless page
+            page = new @ {wiki:wiki, title:title}
+
+          page.text = text
+          page.updated_at = Date.now()
+          page.save (err, data) ->
+            if err
+              return debug err
+            debug "saved #{wiki}/#{title}"
+      , wait
 
   mongoose.model 'Page', pageSchema
