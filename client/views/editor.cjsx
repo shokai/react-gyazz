@@ -44,7 +44,8 @@ module.exports = React.createClass
              style={style.input}
              ref="editlineInput"
              onChange={@_onInputChange}
-             onKeyDown={@_onInputKeyDown} />
+             onKeyDown={@_onInputKeyDown}
+             onFocus={@_onInputFocus} />
           </li>
 
       num += 1
@@ -80,6 +81,13 @@ module.exports = React.createClass
     clearTimeout @clickHoldTimeoutId
 
   ## Edit
+  _onInputFocus: (e) ->
+    input = React.findDOMNode @refs.editlineInput
+    indent = input.value.match(/^(\s*)/)[0].length
+    requestAnimationFrame ->
+      input.selectionStart = indent
+      input.selectionEnd = indent
+
   _onInputChange: (e) ->
     @getFlux().actions.editor.setLine
       value: e.target.value
