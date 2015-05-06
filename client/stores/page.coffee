@@ -154,6 +154,8 @@ module.exports = (app) ->
           .replace /\s+$/, ''
           .replace /^\s{10,}/, '          '
         .value()
+      if typeof @editline is 'number' and @editline > @lines.length-1
+        @editline = @lines.length-1
       @emit 'change'
 
     save: ->
