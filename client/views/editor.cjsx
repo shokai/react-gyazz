@@ -114,4 +114,4 @@ module.exports = React.createClass
         if e.shiftKey
           @getFlux().actions.editor.indentLeft()
       when 13 # enter-key
-        @getFlux().actions.editor.insertNewLine @props.editline+1
+        @getFlux().actions.editor.insertNewLine()

@@ -31,9 +31,9 @@ module.exports = (app) ->
     indentLeft: ->
       @dispatch 'indent-left'
 
-    insertNewLine: (linenum) ->
+    insertNewLine: ->
       @dispatch 'remove-empty-line'
-      @dispatch 'insert-new-line', linenum
+      @dispatch 'insert-new-line'
 
     swapNextLine: ->
       @dispatch 'swap-next-line'
