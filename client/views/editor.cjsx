@@ -15,8 +15,6 @@ markup = new GyazzMarkup
   host: "#{location.protocol}//#{location.host}"
   wiki: window.page.wiki
 
-clickHoldTimeoutId = null
-
 module.exports = React.createClass
   mixins: [
     Fluxxor.FluxMixin React
@@ -72,14 +70,14 @@ module.exports = React.createClass
 
   ## ClickHold
   _onClickHoldStart: (num) ->
-    clearTimeout clickHoldTimeoutId
-    clickHoldTimeoutId = setTimeout =>
+    clearTimeout @clickHoldTimeoutId
+    @clickHoldTimeoutId = setTimeout =>
       @getFlux().actions.editor.edit num
     , 500
 
 
   _onClickHoldCancel: (e) ->
-    clearTimeout clickHoldTimeoutId
+    clearTimeout @clickHoldTimeoutId
 
   ## Edit
   _onInputChange: (e) ->
