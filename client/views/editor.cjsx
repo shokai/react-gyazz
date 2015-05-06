@@ -63,9 +63,9 @@ module.exports = React.createClass
 
   componentDidUpdate: ->
     return if typeof @props.editline isnt 'number'
-    React
-      .findDOMNode @refs.editlineInput
-      ?.focus()
+    if input = React.findDOMNode @refs.editlineInput
+      input.focus()
+      input.addEventListener 'click', (e) -> e.stopPropagation()
 
   _editStop: ->
     @getFlux().actions.editor.edit false
