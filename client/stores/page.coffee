@@ -63,7 +63,11 @@ module.exports = (app) ->
       @save()
 
     insertNewLine: (linenum) ->
-      @lines.splice linenum, 0, ""
+      indent = @getIndentLevel @lines[linenum-1]
+      spaces = [0...indent]
+        .map (i) -> " "
+        .join ''
+      @lines.splice linenum, 0, spaces
       @setEditLine linenum
 
     swapPrevLine: ->
