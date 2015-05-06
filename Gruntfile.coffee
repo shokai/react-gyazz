@@ -5,6 +5,7 @@ module.exports = (grunt) ->
   require 'coffee-errors'
 
   grunt.loadNpmTasks 'grunt-browserify'
+  grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-contrib-uglify'
   grunt.loadNpmTasks 'grunt-contrib-csslint'
   grunt.loadNpmTasks 'grunt-jsonlint'
@@ -24,7 +25,8 @@ module.exports = (grunt) ->
     'simplemocha'
   ]
 
-  grunt.registerTask 'default', [ 'build', 'test' ]
+  grunt.registerTask 'testall', [ 'build', 'test' ]
+  grunt.registerTask 'default', [ 'test', 'watch' ]
 
   grunt.initConfig
 
@@ -84,3 +86,15 @@ module.exports = (grunt) ->
         ignoreLeaks: no
       dist:
         src: [ 'tests/test_*.coffee' ]
+
+    watch:
+      options:
+        interrupt: yes
+      dist:
+        files: [
+          '**/*.{coffee,cjsx}'
+          '!*#*'
+          '!lib/**'
+          '!node_modules/**'
+        ]
+        tasks: [ 'test' ]

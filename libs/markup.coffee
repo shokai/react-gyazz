@@ -1,4 +1,5 @@
 # Gyazz markup
+'use strict'
 
 _ = require 'lodash'
 
