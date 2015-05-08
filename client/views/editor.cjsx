@@ -3,17 +3,11 @@
 React   = require 'react'
 Fluxxor = require 'fluxxor'
 
-mix = require('./util').mix
+util = require('./util')
 
 style =
   input:
     width: '80%'
-
-
-GyazzMarkup = require '../../libs/markup'
-markup = new GyazzMarkup
-  host: "#{location.protocol}//#{location.host}"
-  wiki: window.page.wiki
 
 module.exports = React.createClass
   mixins: [
@@ -22,25 +16,29 @@ module.exports = React.createClass
 
   render: ->
     num = 0
-    lines = @props.lines.map (line) =>
+    lines = util.markup @props.lines, {
+      host: "#{location.protocol}//#{location.host}"
+      wiki: window.page.wiki
+    }
+
+    lines = lines.map (line) =>
       list_item = do (num) =>
-        indent = line.match(/^(\s*)/)[0].length
+        indent = line.raw.match(/^(\s*)/)[0].length
         if num isnt @props.editline
-          gyazz_html = markup.markup line
           <li
            key={num}
-           style={ {marginLeft: indent*20} }
+           style={ {marginLeft: indent*19} }
            onMouseDown={ => @_onClickHoldStart num }
            onMouseOut={@_onClickHoldCancel}
            onMouseUp={@_onClickHoldCancel}>
-             <div dangerouslySetInnerHTML={__html: gyazz_html} />
+             <div dangerouslySetInnerHTML={__html: line.marked} />
           </li>
         else
           <li
            key={num}
-           style={ marginLeft: indent*20 } >
+           style={ marginLeft: indent*19 } >
             <input
-             value={line}
+             value={line.raw}
              style={style.input}
              ref="editlineInput"
              onChange={@_onInputChange}

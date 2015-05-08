@@ -1,6 +1,7 @@
 extends layout
 
 block scripts
+  link(rel="stylesheet" href="/css/highlight.css")
   script.
     var page = JSON.parse(unescape("!{escape(JSON.stringify(page))}"));
     var title = "!{title}"

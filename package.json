@@ -36,6 +36,7 @@
     "grunt-jsonlint": "*",
     "grunt-notify": "*",
     "grunt-simple-mocha": "*",
+    "highlight.js": "^8.5.0",
     "jade": "*",
     "lodash": "*",
     "memjs": "^0.8.5",
