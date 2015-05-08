@@ -91,7 +91,7 @@ module.exports = React.createClass
 
   _onInputChange: (e) ->
     @getFlux().actions.editor.setLine
-      value: e.target.value
+      value: e.target.value.replace(/^\n/, '')
       editline: @props.editline
 
   _onInputKeyDown: (e) ->
