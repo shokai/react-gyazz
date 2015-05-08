@@ -35,7 +35,7 @@ module.exports = (router) ->
           wiki : wiki
       args =
         page: page
-        title: page.title
+        title: "#{page.wiki}::#{page.title}"
         app:
           homepage: pkg.homepage
           description: pkg.description
