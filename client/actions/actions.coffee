@@ -9,15 +9,12 @@ module.exports = (app) ->
   editor:
     edit: (num) ->
       @dispatch 'set-edit-line', num
-      @dispatch 'remove-empty-lines'
 
     editPrevLine: ->
       @dispatch 'edit-prev-line'
-      @dispatch 'remove-empty-lines'
 
     editNextLine: ->
       @dispatch 'edit-next-line'
-      @dispatch 'remove-empty-lines'
 
     setLine: (args) ->
       @dispatch 'set-line', args
@@ -32,7 +29,6 @@ module.exports = (app) ->
       @dispatch 'indent-left'
 
     insertNewLine: ->
-      @dispatch 'remove-empty-lines'
       @dispatch 'insert-new-line'
 
     swapNextLine: ->

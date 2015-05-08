@@ -19,7 +19,6 @@ module.exports = (app) ->
       @bindActions 'indent-right', @indentRight
       @bindActions 'indent-left', @indentLeft
       @bindActions 'insert-new-line', @insertNewLine
-      @bindActions 'remove-empty-lines', @removeEmptyLines
       @bindActions 'swap-next-line', @swapNextLine
       @bindActions 'swap-prev-line', @swapPrevLine
       @bindActions 'swap-next-block', @swapNextBlock
@@ -36,10 +35,14 @@ module.exports = (app) ->
     editPrevLine: ->
       if @editline > 0
         @setEditLine @editline-1
+        @removeEmptyLines()
+        @emit 'change'
 
     editNextLine: ->
       if @editline < @lines.length-1
         @setEditLine @editline+1
+        @removeEmptyLines()
+        @emit 'change'
 
     setLine: (args) ->
       @lines[args.editline] = args.value.split(/\n/)
@@ -65,6 +68,7 @@ module.exports = (app) ->
       @save()
 
     insertNewLine: ->
+      @removeEmptyLines()
       indent = @getIndentLevel @lines[@editline]
       spaces = [0...indent]
         .map (i) -> " "
@@ -159,7 +163,6 @@ module.exports = (app) ->
       if typeof @editline is 'number' and @editline > @lines.length-1
         @editline = @lines.length-1
       @lines = ['(empty)'] if @lines.length < 1
-      @emit 'change'
 
     save: ->
       app.socket.page.save @lines.join '\n'
