@@ -8,9 +8,10 @@ util = require('./util')
 style =
   input:
     width: '80%'
-    height: 12
+    height: 14
+    fontSize: 12
   li:
-    marginTop: 3
+    marginTop: 4
 
 module.exports = React.createClass
   mixins: [
