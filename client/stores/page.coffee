@@ -9,7 +9,8 @@ module.exports = (app) ->
 
     initialize: ->
       @editline = null
-      @lines = window.page.text.split(/[\r\n]+/) or ['(empty)']
+      @lines = window.page.text.split(/[\r\n]+/)
+      @removeEmptyLines()
       @bindActions 'set-edit-line', @setEditLine
       @bindActions 'edit-prev-line', @editPrevLine
       @bindActions 'edit-next-line', @editNextLine
@@ -156,6 +157,7 @@ module.exports = (app) ->
         .value()
       if typeof @editline is 'number' and @editline > @lines.length-1
         @editline = @lines.length-1
+      @lines = ['(empty)'] if @lines.length < 1
       @emit 'change'
 
     save: ->
