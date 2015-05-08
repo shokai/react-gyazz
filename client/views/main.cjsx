@@ -17,7 +17,7 @@ module.exports = React.createClass
 
   render: ->
     <div>
-      <h1>{title}</h1>
+      <h1>{page.title}</h1>
       <div>socket.io: {@state.socket.status}</div>
       <Editor
        lines={@state.page.lines}
