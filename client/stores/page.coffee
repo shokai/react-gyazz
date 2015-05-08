@@ -33,16 +33,16 @@ module.exports = (app) ->
       @emit 'change'
 
     editPrevLine: ->
-      if @editline > 0
-        @setEditLine @editline-1
-        @removeEmptyLines()
-        @emit 'change'
+      return unless @editline > 0
+      @setEditLine @editline-1
+      @removeEmptyLines()
+      @emit 'change'
 
     editNextLine: ->
-      if @editline < @lines.length-1
-        @setEditLine @editline+1
-        @removeEmptyLines()
-        @emit 'change'
+      return unless @editline < @lines.length-1
+      @setEditLine @editline+1
+      @removeEmptyLines()
+      @emit 'change'
 
     setLine: (args) ->
       @lines[args.editline] = args.value.split(/\n/)
