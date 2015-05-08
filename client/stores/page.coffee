@@ -42,7 +42,8 @@ module.exports = (app) ->
         @setEditLine @editline+1
 
     setLine: (args) ->
-      @lines[args.editline] = args.value
+      @lines[args.editline] = args.value.split(/\n/)
+      @lines = _.flatten @lines
       @emit 'change'
       @save()
 

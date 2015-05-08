@@ -8,6 +8,9 @@ util = require('./util')
 style =
   input:
     width: '80%'
+    height: 12
+  li:
+    marginTop: 3
 
 module.exports = React.createClass
   mixins: [
@@ -27,7 +30,7 @@ module.exports = React.createClass
         if num isnt @props.editline
           <li
            key={num}
-           style={ {marginLeft: indent*19} }
+           style={ util.mix {marginLeft: indent*19}, style.li }
            onMouseDown={ => @_onClickHoldStart num }
            onMouseOut={@_onClickHoldCancel}
            onMouseUp={@_onClickHoldCancel}>
@@ -37,7 +40,7 @@ module.exports = React.createClass
           <li
            key={num}
            style={ marginLeft: indent*19 } >
-            <input
+            <textarea
              value={line.raw}
              style={style.input}
              ref="editlineInput"
