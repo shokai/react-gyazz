@@ -29,7 +29,11 @@ module.exports = (app) ->
       editline: @editline
 
     setEditLine: (linenum) ->
-      @editline = _.min [linenum, @lines.length-1]
+      if typeof linenum is 'number'
+        @editline = _.min [linenum, @lines.length-1]
+      else
+        @editline = linenum
+        @removeEmptyLines()
       @emit 'change'
 
     editPrevLine: ->
