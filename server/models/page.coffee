@@ -50,7 +50,10 @@ module.exports = (app) ->
   pageSchema.methods.isEmpty = ->
     return isEmptyPageText @text
 
-
+  pageSchema.methods.toHash = ->
+    wiki:  @wiki
+    title: @title
+    text:  @text
 
   # Options:
   #   cache: false => disable cache

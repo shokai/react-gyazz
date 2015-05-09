@@ -11,6 +11,7 @@ module.exports = (app) ->
       @editline = null
       @lines = window.page.text.split(/[\r\n]+/)
       @removeEmptyLines()
+      @bindActions 'edit-enable', @setEnable
       @bindActions 'set-edit-line', @setEditLine
       @bindActions 'edit-prev-line', @editPrevLine
       @bindActions 'edit-next-line', @editNextLine
@@ -27,6 +28,10 @@ module.exports = (app) ->
     getState: ->
       lines: @lines
       editline: @editline
+      enable: @enable
+
+    setEnable: (@enable) ->
+      @emit 'change'
 
     setEditLine: (linenum) ->
       if typeof linenum is 'number'

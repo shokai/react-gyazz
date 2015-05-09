@@ -21,5 +21,6 @@ module.exports = React.createClass
       <div>socket.io: {@state.socket.status}</div>
       <Editor
        lines={@state.page.lines}
-       editline={@state.page.editline} />
+       editline={@state.page.editline}
+       enable={@state.page.enable} />
     </div>

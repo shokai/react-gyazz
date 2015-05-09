@@ -28,7 +28,7 @@ module.exports = React.createClass
     lines = lines.map (line) =>
       list_item = do (num) =>
         indent = line.raw.match(/^(\s*)/)[0].length
-        if num isnt @props.editline
+        if !@props.enable or num isnt @props.editline
           <li
            key={num}
            style={ util.mix {marginLeft: indent*19}, style.li }

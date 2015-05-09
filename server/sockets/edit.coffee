@@ -19,6 +19,18 @@ module.exports = (router) ->
     socket.once 'disconnect', ->
       socket.leave room
 
+    Page.findOneByName
+      wiki:  wiki
+      title: title
+    , (err, page) ->
+      if err
+        return res.status(500).end 'server error'
+      unless page
+        page = new Page
+          title: title
+          wiki : wiki
+      socket.emit 'pagedata', page.toHash()
+
     socket.on 'pagedata', (page) ->
       debug "write #{wiki}/#{title}"
       Page.write

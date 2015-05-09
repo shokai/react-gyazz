@@ -7,6 +7,12 @@ module.exports = (app) ->
       @dispatch 'set-socket-status', status
 
   editor:
+    enable: ->
+      @dispatch 'edit-enable', true
+
+    disable: ->
+      @dispatch 'edit-enable', false
+
     edit: (num) ->
       @dispatch 'set-edit-line', num
 
