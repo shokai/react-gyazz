@@ -12,6 +12,8 @@ style =
     fontSize: 12
   li:
     marginTop: 4
+  ul_disabled:
+    backgroundColor: '#EEE'
 
 module.exports = React.createClass
   mixins: [
@@ -53,7 +55,9 @@ module.exports = React.createClass
       num += 1
       return list_item
 
-    <ul>{lines}</ul>
+    <ul style={style.ul_disabled unless @props.enable}>
+      {lines}
+    </ul>
 
   ## finish edit-mode
   componentDidMount: ->
