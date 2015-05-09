@@ -22,7 +22,7 @@ module.exports = (router) ->
     Page.findOneByName
       wiki:  wiki
       title: title
-    , (err, page) ->
+    , (err, page) =>
       if err
         return res.status(500).end 'server error'
       unless page
@@ -31,10 +31,10 @@ module.exports = (router) ->
           wiki : wiki
       socket.emit 'pagedata', page.toHash()
 
-    socket.on 'pagedata', (page) ->
-      debug "write #{wiki}/#{title}"
-      Page.write
-        wiki:  wiki
-        title: title
-        text:  page.text
-      socket.broadcast.to(room).emit 'pagedata', page
+      socket.on 'pagedata', (page) ->
+        debug "write #{wiki}/#{title}"
+        Page.write
+          wiki:  wiki
+          title: title
+          text:  page.text
+        socket.broadcast.to(room).emit 'pagedata', page
