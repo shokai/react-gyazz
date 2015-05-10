@@ -3,6 +3,7 @@ node_js:
 - '0.12'
 services:
 - mongodb
+- memcached
 notifications:
   slack:
     secure: hhjFwxspabclpfnkVdjcHPP0X1juSHyF/kgppw2niWujluNazo2Dm2HmaVFkOIIHPEwjll/fiph6MvTBPMyj/YMMWGLwr/X4mJCasRyaaUXq8DLaEKfzEzLD/em/NNalACu05wGE7mZIqFFhtN6Pft2fNXVVNrfeNkfxvcyciuk=
