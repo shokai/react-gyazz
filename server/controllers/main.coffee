@@ -20,7 +20,7 @@ module.exports = (router) ->
   router.get '/:wiki/:title', (req, res) ->
     wiki  = req.params.wiki
     title = req.params.title
-    if !Page.isValidName wiki or !Page.isValidName title
+    if !Page.isValidWikiName or !Page.isValidPageTitle title
       return res.status(404).end 'not found'
     Page.findOneByName
       wiki:  wiki

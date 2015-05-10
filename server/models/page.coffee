@@ -14,7 +14,14 @@ module.exports = (app) ->
 
   pkg = app.get 'package'
 
-  isValidName = (name) ->
+  isValidWikiName = (name) ->
+    return false if typeof name isnt 'string'
+    return false if name.length < 1
+    return false if /\//.test name
+    return false if /^__/.test name  # prefix "__" is reserved for system
+    true
+
+  isValidPageTitle = (name) ->
     return false if typeof name isnt 'string'
     return false if name.length < 1
     return false if /(^\/|\/$)/.test name
@@ -34,10 +41,10 @@ module.exports = (app) ->
   pageSchema = new mongoose.Schema
     wiki:
       type: String
-      validate: [isValidName, 'Invalid WiKi name']
+      validate: [isValidWikiName, 'Invalid WiKi name']
     title:
       type: String
-      validate: [isValidName, 'Invalid Page title']
+      validate: [isValidPageTitle, 'Invalid Page title']
     text:
       type: String
       default: '(empty)'
@@ -48,7 +55,8 @@ module.exports = (app) ->
       type: Date
       default: -> Date.now()
 
-  pageSchema.statics.isValidName = isValidName
+  pageSchema.statics.isValidWikiName  = isValidWikiName
+  pageSchema.statics.isValidPageTitle = isValidPageTitle
   pageSchema.statics.toValidName = toValidName
 
   pageSchema.methods.isEmpty = ->
@@ -64,8 +72,8 @@ module.exports = (app) ->
   pageSchema.statics.findOneByName = (opts = {wiki: null, title: null} , callback) ->
     wiki  = opts.wiki
     title = opts.title
-    if !isValidName(wiki) or
-       (!(title instanceof RegExp) and !isValidName(title))
+    if !isValidWikiName(wiki) or
+       (!(title instanceof RegExp) and !isValidPageTitle(title))
       return callback debug "invalid name wiki:#{wiki}, title:#{title}"
 
     if opts.cache is false
@@ -102,8 +110,8 @@ module.exports = (app) ->
     if typeof text isnt 'string'
       return callback debug "invalid text"
 
-    if !isValidName(wiki) or
-       (!(title instanceof RegExp) and !isValidName(title))
+    if !isValidWikiName(wiki) or
+       (!(title instanceof RegExp) and !isValidPageTitle(title))
       return callback debug "invalid name wiki:#{wiki}, title:#{title}"
 
     key = cache.createKey wiki, title

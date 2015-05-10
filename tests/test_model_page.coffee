@@ -39,18 +39,19 @@ describe 'model "Page"', ->
           assert.equal page.text, text
           done()
 
-  it 'should have method "isValidName"', ->
-    assert.equal typeof Page.isValidName, 'function'
+  it 'should have method "isValidWikiName"', ->
+    assert.equal typeof Page.isValidWikiName, 'function'
 
-  describe 'method "isValidName"', ->
+  describe 'method "isValidWikiName"', ->
     it 'should validate wiki name & page title', ->
-      assert.equal Page.isValidName('test'), true
-      assert.equal Page.isValidName('test/'), false
-      assert.equal Page.isValidName('/test'), false
-      assert.equal Page.isValidName('te/st'), true
-      assert.equal Page.isValidName(''), false
-      assert.equal Page.isValidName(123), false
-      assert.equal Page.isValidName("123"), true
+      assert.equal Page.isValidWikiName('test'), true
+      assert.equal Page.isValidWikiName('test/'), false
+      assert.equal Page.isValidWikiName('/test'), false
+      assert.equal Page.isValidWikiName('te/st'), false
+      assert.equal Page.isValidWikiName(''), false
+      assert.equal Page.isValidWikiName(123), false
+      assert.equal Page.isValidWikiName("123"), true
+      assert.equal Page.isValidWikiName("__api"), false
 
   it 'should have method "toValidName"', ->
     assert.equal typeof Page.toValidName, 'function'
