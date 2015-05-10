@@ -83,7 +83,7 @@ module.exports = (grunt) ->
         ui: 'bdd'
         reporter: 'spec'
         compilers: 'coffee:coffee-script'
-        ignoreLeaks: no
+        ignoreLeaks: yes
       dist:
         src: [ 'tests/test_*.coffee' ]
 

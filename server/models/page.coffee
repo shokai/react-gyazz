@@ -1,6 +1,10 @@
 ## Model: Page
 
-debug    = require('debug')('gyazz:models:page')
+_debug = require('debug')('gyazz:models:page')
+debug  = (msg) ->
+  _debug msg
+  return msg
+
 _        = require 'lodash'
 mongoose = require 'mongoose'
 memjs    = require 'memjs'
@@ -62,8 +66,7 @@ module.exports = (app) ->
     title = opts.title
     if !isValidName(wiki) or
        (!(title instanceof RegExp) and !isValidName(title))
-      callback "invalid name wiki:#{wiki}, title:#{title}"
-      return
+      return callback debug "invalid name wiki:#{wiki}, title:#{title}"
 
     if opts.cache is false
       @findOne
@@ -82,8 +85,8 @@ module.exports = (app) ->
           wiki: wiki
           title: title
           text: decodeURI cached_text
-        callback null, page
-        return
+        return callback null, page
+
       debug "get page #{wiki}/#{title}"
       @findOne
         wiki:  wiki
@@ -92,16 +95,16 @@ module.exports = (app) ->
 
 
   pageWriteTimeouts = {}
-  pageSchema.statics.write = (opts = {wiki: null, title: null, text: null}) ->
+  pageSchema.statics.write = (opts, callback = ->) ->
     wiki  = opts.wiki
     title = opts.title
     text  = opts.text
     if typeof text isnt 'string'
-      return debug "invalid text"
+      return callback debug "invalid text"
 
     if !isValidName(wiki) or
        (!(title instanceof RegExp) and !isValidName(title))
-      return debug "invalid name wiki:#{wiki}, title:#{title}"
+      return callback debug "invalid name wiki:#{wiki}, title:#{title}"
 
     key = cache.createKey wiki, title
     cache.set key, encodeURI(text), (err, val) =>
@@ -120,7 +123,7 @@ module.exports = (app) ->
           title: title
           cache: false
         , (err, page) =>
-          return debug err if err
+          return callback debug err if err
 
           unless page
             page = new @ {wiki:wiki, title:title}
@@ -129,8 +132,10 @@ module.exports = (app) ->
           page.updated_at = Date.now()
           page.save (err, data) ->
             if err
-              return debug err
+              return callback debug err
             debug "saved #{wiki}/#{title}"
       , wait
+
+      callback()
 
   mongoose.model 'Page', pageSchema
