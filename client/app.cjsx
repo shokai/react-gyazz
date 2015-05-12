@@ -1,6 +1,11 @@
 React   = require 'react'
 Fluxxor = require 'fluxxor'
 
+validator = require '../libs/validator'
+
+if !validator.isWikiName(page.wiki) or !validator.isPageTitle(page.title)
+  return console.error 'invalid WikiName/PageTitle'
+
 query   = "wiki=#{encodeURIComponent page.wiki}&title=#{encodeURIComponent page.title}"
 socket  = require('socket.io-client').connect "#{location.protocol}//#{location.host}?#{query}"
 

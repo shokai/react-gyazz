@@ -1,5 +1,7 @@
 ## Model: Page
 
+path = require 'path'
+
 _debug = require('debug')('gyazz:models:page')
 debug  = (msg) ->
   _debug msg
@@ -10,41 +12,21 @@ mongoose = require 'mongoose'
 memjs    = require 'memjs'
 cache    = memjs.Client.create null, {expire: 60}
 
+validator = require path.resolve 'libs/validator'
+
 module.exports = (app) ->
 
   pkg = app.get 'package'
 
-  isValidWikiName = (name) ->
-    return false if typeof name isnt 'string'
-    return false if name.length < 1
-    return false if /\//.test name
-    return false if /^__/.test name  # prefix "__" is reserved for system
-    true
-
-  isValidPageTitle = (name) ->
-    return false if typeof name isnt 'string'
-    return false if name.length < 1
-    return false if /(^\/|\/$)/.test name
-    true
-
-  toValidName = (name) -> name.replace(/^\/+/, '').replace(/\/+$/, '')
-
-  isEmptyPageText = (text) ->
-    return false if typeof text isnt 'string'
-    return text is null or
-           text.length < 1 or
-           text is '(empty)'
-
   cache.createKey = (wiki, title) -> "#{pkg.name}::page::#{wiki}/#{title}"
-
 
   pageSchema = new mongoose.Schema
     wiki:
       type: String
-      validate: [isValidWikiName, 'Invalid WiKi name']
+      validate: [validator.isWikiName, 'Invalid WiKi name']
     title:
       type: String
-      validate: [isValidPageTitle, 'Invalid Page title']
+      validate: [validator.isPageTitle, 'Invalid Page title']
     text:
       type: String
       default: '(empty)'
@@ -55,12 +37,7 @@ module.exports = (app) ->
       type: Date
       default: -> Date.now()
 
-  pageSchema.statics.isValidWikiName  = isValidWikiName
-  pageSchema.statics.isValidPageTitle = isValidPageTitle
-  pageSchema.statics.toValidName = toValidName
-
-  pageSchema.methods.isEmpty = ->
-    return isEmptyPageText @text
+  pageSchema.methods.isEmpty = -> validator.isEmptyPageText @text
 
   pageSchema.methods.toHash = ->
     wiki:  @wiki
@@ -72,8 +49,8 @@ module.exports = (app) ->
   pageSchema.statics.findOneByName = (opts = {wiki: null, title: null} , callback) ->
     wiki  = opts.wiki
     title = opts.title
-    if !isValidWikiName(wiki) or
-       (!(title instanceof RegExp) and !isValidPageTitle(title))
+    if !validator.isWikiName(wiki) or
+       (!(title instanceof RegExp) and !validator.isPageTitle(title))
       return callback debug "invalid name wiki:#{wiki}, title:#{title}"
 
     if opts.cache is false
@@ -110,8 +87,8 @@ module.exports = (app) ->
     if typeof text isnt 'string'
       return callback debug "invalid text"
 
-    if !isValidWikiName(wiki) or
-       (!(title instanceof RegExp) and !isValidPageTitle(title))
+    if !validator.isWikiName(wiki) or
+       (!(title instanceof RegExp) and !validator.isPageTitle(title))
       return callback debug "invalid name wiki:#{wiki}, title:#{title}"
 
     key = cache.createKey wiki, title
@@ -120,7 +97,7 @@ module.exports = (app) ->
       if err
         debug "cache set Error - #{err}"
         wait = 10
-      if isEmptyPageText text
+      if validator.isEmptyPageText text
         wait = 1
 
       clearTimeout pageWriteTimeouts[key]

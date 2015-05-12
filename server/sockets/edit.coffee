@@ -1,5 +1,8 @@
-debug    = require('debug')('gyazz:sockets:edit')
-mongoose = require 'mongoose'
+path = require 'path'
+
+debug     = require('debug')('gyazz:sockets:edit')
+mongoose  = require 'mongoose'
+validator = require path.resolve 'libs/validator'
 
 Page = mongoose.model 'Page'
 
@@ -9,8 +12,9 @@ module.exports = (router) ->
   io.on 'connection', (socket) ->
     wiki  = decodeURIComponent socket.handshake.query.wiki
     title = decodeURIComponent socket.handshake.query.title
-    unless wiki? or title?
+    if !validator.isWikiName(wiki) or !validator.isPageTitle(title)
       socket.disconnect()
+      debug "invalid WikiName/PageTitle #{wiki}/#{title}"
       return
 
     room = "#{wiki}/#{title}"

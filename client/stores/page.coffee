@@ -3,6 +3,8 @@
 Fluxxor = require 'fluxxor'
 _       = require 'lodash'
 
+validator = require '../../libs/validator'
+
 module.exports = (app) ->
 
   Fluxxor.createStore
@@ -161,15 +163,12 @@ module.exports = (app) ->
       @save()
 
     removeEmptyLines: ->
-      @lines = _
-        .chain @lines
-        .reject (line) -> /^\s*$/.test line
+      @lines = validator
+        .removeEmptyLines @lines
         .map (line) ->
-          line
-          .replace /\s+$/, ''
-          .replace /^\s{10,}/, '          '
-        .value()
-      if typeof @editline is 'number' and @editline > @lines.length-1
+          line.replace /^\s{10,}/, '          ' # limit 10 indent
+
+      if @editline > @lines.length-1
         @editline = @lines.length-1
       @lines = ['(empty)'] if @lines.length < 1
 
