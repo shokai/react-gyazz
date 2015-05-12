@@ -1,6 +1,9 @@
-debug    = require('debug')('gyazz:controller:main')
-mongoose = require 'mongoose'
-Page     = mongoose.model 'Page'
+path = require 'path'
+
+debug     = require('debug')('gyazz:controller:main')
+mongoose  = require 'mongoose'
+Page      = mongoose.model 'Page'
+validator = require path.resolve 'libs/validator'
 
 
 module.exports = (router) ->
@@ -20,7 +23,7 @@ module.exports = (router) ->
   router.get '/:wiki/:title', (req, res) ->
     wiki  = req.params.wiki
     title = req.params.title
-    if !Page.isValidWikiName or !Page.isValidPageTitle title
+    if !validator.isWikiName or !validator.isPageTitle title
       return res.status(404).end 'not found'
     Page.findOneByName
       wiki:  wiki
