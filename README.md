@@ -5,7 +5,7 @@ Gyazz style Wiki implement with Ract and Fluxxor
 - [demo](https://react-gyazz.herokuapp.com/)
 - [source code](https://github.com/shokai/react-gyazz)
 
-[![Build Status](https://travis-ci.org/shokai/react-gyazz.svg?branch=master)](https://travis-ci.org/shokai/react-gyazz)
+[![Circle CI](https://circleci.com/gh/shokai/react-gyazz.svg?style=svg)](https://circleci.com/gh/shokai/react-gyazz)
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
 - coffee-script
